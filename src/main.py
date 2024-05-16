@@ -1,5 +1,6 @@
 from player import Player
 from enemy import Enemy
+from button import Button
 import pygame as pg
 import os
 import random
@@ -45,6 +46,8 @@ ENEMY_FOUR = pg.transform.scale(ENEMY_FOUR, (75, 75))
 ENEMY_FOUR_LASERS = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_four_lasers.png"))
 ENEMY_FOUR_LASERS = pg.transform.scale(ENEMY_FOUR_LASERS, (8, 32))
 
+BUTTON = pg.image.load(os.path.join("..", "assets", "images", "button.png"))
+
 # Setting up the sfx and background music
 pg.mixer.init()
 LEVEL_UP_SFX = pg.mixer.Sound("..\\assets\\sounds\\level_up.wav")
@@ -55,15 +58,61 @@ HURT_SFX = pg.mixer.Sound("..\\assets\\sounds\\hurt.wav")
 os.chdir("..\\assets\\sounds")
 pg.mixer.music.load("background_music.mp3")
 os.chdir("..\\..\\src")
-pg.mixer.music.play(-1, 0.0)
+
+# Setting up the fonts
+MAIN_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 50)
+PLAY_BUTTON_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 100)
+TITLE_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 125)
+
+def main_menu():
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+        play_button = Button(WIN.get_width() / 2 - BUTTON.get_width() / 2, 500, BUTTON, "PLAY", PLAY_BUTTON_FONT)
+        play_button.draw(WIN)
+        title_line_1 = TITLE_FONT.render("SPACE", 1, (255, 255, 255))
+        title_line_2 = TITLE_FONT.render("INVADERS", 1, (255, 255, 255))
+        WIN.blit(title_line_1, (WIN.get_width() / 2 - title_line_1.get_width() / 2, 100))
+        WIN.blit(title_line_2, (WIN.get_width() / 2 - title_line_2.get_width() / 2, 200))
+        WIN.blit(PLAYER_SHIP, (WIN.get_width() / 2 - PLAYER_SHIP.get_width() / 2, 375))
+        
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                exit(0)
+            if event.type == pg.MOUSEBUTTONDOWN and play_button.rect.collidepoint(event.pos):
+                run = False
+        
+        pg.display.update()
+    pg.mixer.music.play(-1, 0.0)
+    main()
+
+def game_over():
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+        play_again_button = Button(WIN.get_width() / 2 - BUTTON.get_width() / 2, 500, BUTTON, "PLAY AGAIN", MAIN_FONT)
+        play_again_button.draw(WIN)
+        game_over_line_1 = TITLE_FONT.render("GAME", 1, (255, 255, 255))
+        game_over_line_2 = TITLE_FONT.render("OVER", 1, (255, 255, 255))
+        WIN.blit(game_over_line_1, (WIN.get_width() / 2 - game_over_line_1.get_width() / 2, 100))
+        WIN.blit(game_over_line_2, (WIN.get_width() / 2 - game_over_line_2.get_width() / 2, 200))
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                exit(0)
+            if event.type == pg.MOUSEBUTTONDOWN and play_again_button.rect.collidepoint(event.pos):
+                run = False
+        
+        pg.display.update()
+    main()
 
 def main():
     run = True
     level = 0
     lives = 5
     player_vel = 5
-    lost = False
-    main_font = pg.font.Font("..\\assets\\fonts\\main_font.otf", 50)
     
     # Setting enemy variables to manipulate difficulty
     enemies = []
@@ -91,8 +140,8 @@ def main():
         WIN.blit(BG, (0, 0))
         
         # Rendering the lives and level labels
-        lives_label = main_font.render(f"Lives: {lives}", 1, (255, 255, 255))
-        level_label = main_font.render(f"Level: {level}", 1, (255, 255, 255))
+        lives_label = MAIN_FONT.render(f"Lives: {lives}", 1, (255, 255, 255))
+        level_label = MAIN_FONT.render(f"Level: {level}", 1, (255, 255, 255))
         WIN.blit(lives_label, (10, 10))
         WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
 
@@ -213,8 +262,9 @@ def main():
 
         # Checking if the player lost
         if lives <= 0:
-            lost = True
             run = False
-    exit(0)
+    game_over()
     pg.mixer.stop()
-main()
+    exit(0)
+
+main_menu()
