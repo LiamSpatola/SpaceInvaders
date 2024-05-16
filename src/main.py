@@ -111,7 +111,7 @@ def game_over():
 def main():
     run = True
     level = 0
-    lives = 5
+    lives = 3
     player_vel = 5
     
     # Setting enemy variables to manipulate difficulty
