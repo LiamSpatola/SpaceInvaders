@@ -24,3 +24,21 @@ class Button:
         """
         window.blit(self.button_img, (self.x, self.y))
         window.blit(self.text, (self.text_x, self.text_y))
+
+    def clicked(self, mouse_pos):
+        """ Checks if the button was clicked
+
+        Parameters
+        ----------
+        mouse_pos : tuple
+            The x and y position of the mouse
+        
+        Returns
+        -------
+        bool
+            True if clicked, false otherwise
+        """
+        if self.rect.collidepoint(mouse_pos):
+            if pg.mouse.get_pressed()[0]:
+                return True
+        return False

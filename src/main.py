@@ -80,12 +80,14 @@ def main_menu():
             if event.type == pg.QUIT:
                 pg.quit()
                 exit(0)
-            if event.type == pg.MOUSEBUTTONDOWN and play_button.rect.collidepoint(event.pos):
-                run = False
         
-        pg.display.update()
-    pg.mixer.music.play(-1, 0.0)
+        pos = pg.mouse.get_pos()
+        if play_button.clicked(pos):
+            run = False
+        
+        pg.display.flip()
     main()
+    pg.mixer.music.play(-1, 0.0)
 
 def game_over():
     run = True
@@ -102,13 +104,17 @@ def game_over():
             if event.type == pg.QUIT:
                 pg.quit()
                 exit(0)
-            if event.type == pg.MOUSEBUTTONDOWN and play_again_button.rect.collidepoint(event.pos):
-                run = False
         
-        pg.display.update()
+        pos = pg.mouse.get_pos()
+        if play_again_button.clicked(pos):
+            run = False
+            break
+        
+        pg.display.flip()
     main()
 
 def main():
+    pg.display.flip()
     run = True
     level = 0
     lives = 3
@@ -268,3 +274,4 @@ def main():
     exit(0)
 
 main_menu()
+main()
