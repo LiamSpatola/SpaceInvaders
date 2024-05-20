@@ -13,7 +13,7 @@ class Player(Ship):
         self.mask = pg.mask.from_surface(self.ship_img)
         self.health = health
 
-    def move_lasers(self, vel: int, objs: list): # Overriding the parent class move_lasers function to modify the collision behaviours with enemies
+    def move_lasers(self, vel: int, objs: list) -> int: # Overriding the parent class move_lasers function to modify the collision behaviours with enemies
         """ Moving the lasers
         
         Parameters
@@ -22,11 +22,17 @@ class Player(Ship):
             The velocity of the lasers
         objs : list
             The objects which the laser can collide with (i.e. the objects which it can hurt)
+
+        Returns
+        -------
+        int
+            The amount the score should be increased by, based off what the lasers have hit
         """
         from main import HEIGHT, KILLED_ENEMY_SFX # Importing in the move_lasers function to avoid a circular import with main
 
 
         self.cooldown()
+        score_increase = 0
         for laser in self.lasers:
             laser.move(vel)
             if laser.off_screen(HEIGHT):
@@ -37,6 +43,15 @@ class Player(Ship):
                         KILLED_ENEMY_SFX.play()
                         obj.health -= 10
                         if obj.health <= 0:
+                            match obj.variant:
+                                case "level_one":
+                                    score_increase += 1
+                                case "level_two":
+                                    score_increase += 2
+                                case "level_three":
+                                    score_increase += 3
+                                case "level_four":
+                                    score_increase += 4
                             objs.remove(obj)
 
                         # To fix errors where the laser is removed twice, and so isn't in the list anymore and throws a ValueError
@@ -44,6 +59,7 @@ class Player(Ship):
                             self.lasers.remove(laser)
                         except ValueError:
                             pass
+        return score_increase
 
     def draw(self, window): # Overriding the parent class' draw function to also render the healthbar
         """ Drawing the player and healthbar on the screen

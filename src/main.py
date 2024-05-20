@@ -89,35 +89,12 @@ def main_menu():
     main()
     pg.mixer.music.play(-1, 0.0)
 
-def game_over():
-    run = True
-    while run:
-        WIN.blit(BG, (0, 0))
-        play_again_button = Button(WIN.get_width() / 2 - BUTTON.get_width() / 2, 500, BUTTON, "PLAY AGAIN", MAIN_FONT)
-        play_again_button.draw(WIN)
-        game_over_line_1 = TITLE_FONT.render("GAME", 1, (255, 255, 255))
-        game_over_line_2 = TITLE_FONT.render("OVER", 1, (255, 255, 255))
-        WIN.blit(game_over_line_1, (WIN.get_width() / 2 - game_over_line_1.get_width() / 2, 100))
-        WIN.blit(game_over_line_2, (WIN.get_width() / 2 - game_over_line_2.get_width() / 2, 200))
-
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                pg.quit()
-                exit(0)
-        
-        pos = pg.mouse.get_pos()
-        if play_again_button.clicked(pos):
-            run = False
-            break
-        
-        pg.display.flip()
-    main()
-
 def main():
     pg.display.flip()
     run = True
     level = 0
     lives = 3
+    score = -10
     player_vel = 5
     
     # Setting enemy variables to manipulate difficulty
@@ -146,10 +123,15 @@ def main():
         WIN.blit(BG, (0, 0))
         
         # Rendering the lives and level labels
+        # Making score_label and level_label global so they can be accessed for the game over screen
+        global score_label
+        global level_label
         lives_label = MAIN_FONT.render(f"Lives: {lives}", 1, (255, 255, 255))
         level_label = MAIN_FONT.render(f"Level: {level}", 1, (255, 255, 255))
+        score_label = MAIN_FONT.render(f"Score: {score}", 1, (255, 255, 255))
         WIN.blit(lives_label, (10, 10))
         WIN.blit(level_label, (WIDTH - level_label.get_width() - 10, 10))
+        WIN.blit(score_label, (10, 10 + score_label.get_height()))
 
         # Rendering the enemies
         for enemy in enemies:
@@ -166,9 +148,10 @@ def main():
         # Checking if there are any more enemies, and if there are none, beginning a new level
         if len(enemies) == 0:
             level += 1
+            score += 10
             enemy_vel += 0.1
             new_enemy_x = 112
-            new_enemy_y = 75
+            new_enemy_y = 100
             number_in_current_line = 0
             LEVEL_UP_SFX.play()
 
@@ -186,7 +169,6 @@ def main():
                     enemy = Enemy(new_enemy_x, new_enemy_y, random.choice(["level_two", "level_three", "level_three", "level_four"]))
                 elif level > 7:
                     enemy = Enemy(new_enemy_x, new_enemy_y, random.choice(["level_three", "level_four", "level_four", "level_four"]))
-                # enemy = Enemy(new_enemy_x, new_enemy_y, random.choice(["level_one", "level_two", "level_three", "level_four"]))
 
                 # Checking whether there is yet 7 enemies in the line, and if so, making a new line
                 if number_in_current_line >= 6:
@@ -248,7 +230,7 @@ def main():
                 lives -= 1
                 enemies.remove(enemy)
 
-        player_ship.move_lasers(player_laser_vel, enemies)
+        score += player_ship.move_lasers(player_laser_vel, enemies)
 
         move_downward = False
 
@@ -272,6 +254,32 @@ def main():
     game_over()
     pg.mixer.stop()
     exit(0)
+
+def game_over():
+    run = True
+    while run:
+        WIN.blit(BG, (0, 0))
+        play_again_button = Button(WIN.get_width() / 2 - BUTTON.get_width() / 2, 500, BUTTON, "PLAY AGAIN", MAIN_FONT)
+        play_again_button.draw(WIN)
+        game_over_line_1 = TITLE_FONT.render("GAME", 1, (255, 255, 255))
+        game_over_line_2 = TITLE_FONT.render("OVER", 1, (255, 255, 255))
+        WIN.blit(game_over_line_1, (WIN.get_width() / 2 - game_over_line_1.get_width() / 2, 100))
+        WIN.blit(game_over_line_2, (WIN.get_width() / 2 - game_over_line_2.get_width() / 2, 200))
+        WIN.blit(score_label, (WIN.get_width() / 2 - score_label.get_width() / 2, 350))
+        WIN.blit(level_label, (WIN.get_width() / 2 - score_label.get_width() / 2, 410))
+
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
+                exit(0)
+        
+        pos = pg.mouse.get_pos()
+        if play_again_button.clicked(pos):
+            run = False
+            break
+        
+        pg.display.flip()
+    main()
 
 main_menu()
 main()
