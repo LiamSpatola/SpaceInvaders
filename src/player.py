@@ -35,7 +35,9 @@ class Player(Ship):
                 for obj in objs:
                     if laser.collision(obj):
                         KILLED_ENEMY_SFX.play()
-                        objs.remove(obj)
+                        obj.health -= 10
+                        if obj.health <= 0:
+                            objs.remove(obj)
 
                         # To fix errors where the laser is removed twice, and so isn't in the list anymore and throws a ValueError
                         try:

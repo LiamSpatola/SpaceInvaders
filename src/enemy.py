@@ -4,9 +4,20 @@ import pygame as pg
 
 
 class Enemy(Ship):
-    def __init__(self, x: int, y: int, enemy_variant: str, health: int = 100):
+    def __init__(self, x: int, y: int, enemy_variant: str):
         from main import ENEMY_ONE, ENEMY_ONE_LASERS, ENEMY_TWO, ENEMY_TWO_LASERS, ENEMY_THREE, ENEMY_THREE_LASERS, ENEMY_FOUR, ENEMY_FOUR_LASERS # Importing in the __init__ function to avoid a circular import with main.py
 
+        
+        # Setting the health based on the enemy difficulty, to manipulate game difficulty
+        match enemy_variant:
+            case "level_one":
+                health = 10
+            case "level_two":
+                health = 20
+            case "level_three":
+                health = 30
+            case "level_four":
+                health = 40
 
         super().__init__(x, y, health)
 
