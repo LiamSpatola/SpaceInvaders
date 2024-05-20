@@ -86,7 +86,6 @@ def main_menu():
             run = False
         
         pg.display.flip()
-    main()
     pg.mixer.music.play(-1, 0.0)
 
 def main():
