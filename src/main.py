@@ -1,6 +1,7 @@
 from player import Player
 from enemy import Enemy
 from button import Button
+from power_up import PowerUp
 import pygame as pg
 import os
 import random
@@ -95,6 +96,7 @@ def main():
     lives = 3
     score = -10
     player_vel = 5
+    power_up_randomness = 600
     
     # Setting enemy variables to manipulate difficulty
     enemies = []
