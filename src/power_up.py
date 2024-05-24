@@ -1,12 +1,14 @@
 from ship import Ship
+import pygame as pg
 
 
 class PowerUp(Ship):
     def __init__(self, x: int, y: int, img, time_alive: int, variant: str):
         super().__init__(x, y)
         self.ship_img = img
-        self.time_alive = time_alive
+        self.time_alive = time_alive # in frames
         self.variant = variant
+        self.mask = pg.mask.from_surface(self.ship_img)
 
     def countdown(self) -> bool:
         """ Counts down the timer for the time to keep the powerup
@@ -44,12 +46,12 @@ class PowerUp(Ship):
         return obj1.mask.overlap(obj2.mask, (x_offset, y_offset)) is not None # Returning true for a collision, false for no collision
     
     def collision(self, obj) -> bool:
-        """ Checks if the laser has collided with another object
+        """ Checks if the power up has collided with another object
 
         Parameters
         ----------
-        obj : player
-            The object to check if the laser has collided with
+        obj : laser
+            The object to check if the power up has collided with
         
         Returns
         -------

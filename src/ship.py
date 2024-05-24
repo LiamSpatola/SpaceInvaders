@@ -2,8 +2,6 @@ from laser import Laser
 
 
 class Ship:
-    COOLDOWN = 20 # Setting the cooldown for laser shooting to 20 frames (1/3 of a second)
-
     def __init__(self, x: int, y: int, health:int = 100):
         self.x = x
         self.y = y
@@ -12,6 +10,7 @@ class Ship:
         self.lasers_img = None
         self.lasers = []
         self.cool_down_counter = 0
+        self.COOLDOWN = 20 # Setting the cooldown for laser shooting to 20 frames (1/3 of a second)
     
     def draw(self, window):
         """ Draws the ship on the window

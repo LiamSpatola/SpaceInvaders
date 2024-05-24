@@ -49,6 +49,12 @@ ENEMY_FOUR_LASERS = pg.transform.scale(ENEMY_FOUR_LASERS, (8, 32))
 
 BUTTON = pg.image.load(os.path.join("..", "assets", "images", "button.png"))
 
+BONUS_HEALTH_POWER_UP = pg.image.load(os.path.join("..", "assets", "images", "heart.png"))
+BONUS_HEALTH_POWER_UP = pg.transform.scale(BONUS_HEALTH_POWER_UP, (50, 50))
+
+EXTRA_FIREPOWER_POWER_UP = pg.image.load(os.path.join("..", "assets", "images", "lightning_bolt.png"))
+EXTRA_FIREPOWER_POWER_UP = pg.transform.scale(EXTRA_FIREPOWER_POWER_UP, (50, 50))
+
 # Setting up the sfx and background music
 pg.mixer.init()
 LEVEL_UP_SFX = pg.mixer.Sound("..\\assets\\sounds\\level_up.wav")
@@ -96,7 +102,12 @@ def main():
     lives = 3
     score = -10
     player_vel = 5
+
+    # Power up variables
     power_up_randomness = 600
+    power_ups = []
+    global extra_firepower_active
+    extra_firepower_active = False
     
     # Setting enemy variables to manipulate difficulty
     enemies = []
@@ -140,9 +151,37 @@ def main():
 
         # Rendering the player ship
         player_ship.draw(WIN)
+
+        # Rendering the power ups
+        for power_up in power_ups:
+            power_up.draw(WIN)
         
         pg.display.update()
     
+    def extra_firepower(time: int) -> int:
+        """ Gives the player extra firepower if they hit a extra fire power power up
+
+        Parameters
+        ----------
+        time : int
+            The duration of the power up in frames
+
+        Returns
+        -------
+        int
+            The amount of time left
+        """
+        if time > 0:
+            global player_laser_vel
+            player_laser_vel = -10 # Increasing the player laser velocity
+            player_ship.COOLDOWN = 12 # Decreasing the player laser cooldown time
+            return time - 1
+        elif time == 0:
+            # Resetting the player firepower
+            player_laser_vel -7
+            player_ship.COOLDOWN = 20
+            return 0
+
     while run:
         clock.tick(FPS)
 
@@ -236,6 +275,51 @@ def main():
         move_downward = False
 
         redraw_window()
+
+        # Creating and drawing powerups
+        if random.randrange(0, power_up_randomness) == 1:
+            # Determining the power up variant
+            variant = random.choice(["bonus_health", "extra_firepower"])
+            match variant:
+                case "bonus_health":
+                    img = BONUS_HEALTH_POWER_UP
+                case "extra_firepower":
+                    img = EXTRA_FIREPOWER_POWER_UP
+            
+            power_up = PowerUp(random.randrange(0, WIDTH + 50), random.randrange(500, HEIGHT - 150), img, random.randrange(200, 600), variant)
+            power_ups.append(power_up)
+
+        # Updating the powerups, checking for collision, and running the countdown until their destruction
+        for power_up in power_ups:
+            if not power_up.countdown():
+                power_ups.remove(power_up)
+            
+            # Checking for collision
+            for laser in player_ship.lasers:
+                if power_up.collision(laser):
+                    KILLED_ENEMY_SFX.play()
+                    # Deciding the power up
+                    match power_up.variant:
+                        case "bonus_health":
+                            if player_ship.health < 100:
+                                player_ship.health += 10
+                            else:
+                                lives += 1
+                                player_ship.health = 10
+                        case "extra_firepower":
+                            extra_firepower_active = True
+                            new_time = 600
+                              
+                    # Removing the power up and laser
+                    power_ups.remove(power_up)
+                    player_ship.lasers.remove(laser)
+
+        # Checking if extra firepower is active, and if so, implementing it
+        if extra_firepower_active:
+            new_time = extra_firepower(new_time)
+            if new_time < 0:
+                extra_firepower_active = False
+
 
         # Checking if the player has zero health and subtracting a life
         if player_ship.health <= 0:
