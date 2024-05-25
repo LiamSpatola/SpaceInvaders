@@ -303,7 +303,7 @@ def main():
                         case "bonus_health":
                             if player_ship.health < 100:
                                 player_ship.health += 10
-                            elif player_ship.health < 100 and lives < 3:
+                            elif lives < 3:
                                 lives += 1
                                 player_ship.health = 10
                         case "extra_firepower":
