@@ -286,7 +286,7 @@ def main():
                 case "extra_firepower":
                     img = EXTRA_FIREPOWER_POWER_UP
             
-            power_up = PowerUp(random.randrange(0, WIDTH + 50), random.randrange(500, HEIGHT - 150), img, random.randrange(200, 600), variant)
+            power_up = PowerUp(random.randrange(0, WIDTH + 100), random.randrange(500, HEIGHT - 150), img, random.randrange(200, 600), variant)
             power_ups.append(power_up)
 
         # Updating the powerups, checking for collision, and running the countdown until their destruction
@@ -303,7 +303,7 @@ def main():
                         case "bonus_health":
                             if player_ship.health < 100:
                                 player_ship.health += 10
-                            else:
+                            elif player_ship.health < 100 and lives < 3:
                                 lives += 1
                                 player_ship.health = 10
                         case "extra_firepower":
