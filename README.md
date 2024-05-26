@@ -7,10 +7,7 @@ Welcome! This is a clone of the retro game Space Invaders, built with python usi
 To install the project:
 
 1. Clone the repository, or get the source code from the releases section on GitHub.
-2. Change directory into the src directory by running the following command:
-    ```cmd
-    cd src
-    ```
+2. Change directory into the root directory of the project.
 3. Install the required dependancies by running the following command:
     ```cmd
     pip install -r requirements.txt
@@ -39,4 +36,4 @@ The base functionality was created using a tutorial from [Tech With Tim](https:/
 Many thanks go to all those whose work has contributed to this game. It would not be possible without it.
 
 ## Licensing
-This porject is licensed under the GNU GPLv3. A copy can be found in the LICENSE file or [here](https://www.gnu.org/licenses/gpl-3.0.txt).
+This project is licensed under the GNU GPLv3. A copy can be found in the LICENSE file or [here](https://www.gnu.org/licenses/gpl-3.0.txt).

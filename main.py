@@ -14,62 +14,60 @@ pg.display.set_caption("Space Invaders by Liam Spatola")
 pg.font.init()
 
 # Importing the game assets and resizing them
-BG = pg.image.load(os.path.join("..", "assets", "images", "background.jpg"))
+BG = pg.image.load(os.path.join("assets", "images", "background.jpg"))
 BG = pg.transform.scale(BG, (750, 750))
 
-PLAYER_SHIP = pg.image.load(os.path.join("..", "assets", "images", "player_ship.png"))
+PLAYER_SHIP = pg.image.load(os.path.join("assets", "images", "player_ship.png"))
 PLAYER_SHIP = pg.transform.scale(PLAYER_SHIP, (75, 75))
 
-PLAYER_LASERS = pg.image.load(os.path.join("..", "assets", "images", "player_lasers.png"))
+PLAYER_LASERS = pg.image.load(os.path.join("assets", "images", "player_lasers.png"))
 PLAYER_LASERS = pg.transform.scale(PLAYER_LASERS, (8, 32))
 
-ENEMY_ONE = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_one.png"))
+ENEMY_ONE = pg.image.load(os.path.join("assets", "images", "enemy_level_one.png"))
 ENEMY_ONE = pg.transform.scale(ENEMY_ONE, (75, 75))
 
-ENEMY_ONE_LASERS = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_one_lasers.png"))
+ENEMY_ONE_LASERS = pg.image.load(os.path.join("assets", "images", "enemy_level_one_lasers.png"))
 ENEMY_ONE_LASERS = pg.transform.scale(ENEMY_ONE_LASERS, (8, 32))
 
-ENEMY_TWO = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_two.png"))
+ENEMY_TWO = pg.image.load(os.path.join("assets", "images", "enemy_level_two.png"))
 ENEMY_TWO = pg.transform.scale(ENEMY_TWO, (75, 75))
 
-ENEMY_TWO_LASERS = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_two_lasers.png"))
+ENEMY_TWO_LASERS = pg.image.load(os.path.join("assets", "images", "enemy_level_two_lasers.png"))
 ENEMY_TWO_LASERS = pg.transform.scale(ENEMY_TWO_LASERS, (8, 32))
 
-ENEMY_THREE = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_three.png"))
+ENEMY_THREE = pg.image.load(os.path.join("assets", "images", "enemy_level_three.png"))
 ENEMY_THREE = pg.transform.scale(ENEMY_THREE, (75, 75))
 
-ENEMY_THREE_LASERS = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_three_lasers.png"))
+ENEMY_THREE_LASERS = pg.image.load(os.path.join("assets", "images", "enemy_level_three_lasers.png"))
 ENEMY_THREE_LASERS = pg.transform.scale(ENEMY_THREE_LASERS, (8, 32))
 
-ENEMY_FOUR = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_four.png"))
+ENEMY_FOUR = pg.image.load(os.path.join("assets", "images", "enemy_level_four.png"))
 ENEMY_FOUR = pg.transform.scale(ENEMY_FOUR, (75, 75))
 
-ENEMY_FOUR_LASERS = pg.image.load(os.path.join("..", "assets", "images", "enemy_level_four_lasers.png"))
+ENEMY_FOUR_LASERS = pg.image.load(os.path.join("assets", "images", "enemy_level_four_lasers.png"))
 ENEMY_FOUR_LASERS = pg.transform.scale(ENEMY_FOUR_LASERS, (8, 32))
 
-BUTTON = pg.image.load(os.path.join("..", "assets", "images", "button.png"))
+BUTTON = pg.image.load(os.path.join("assets", "images", "button.png"))
 
-BONUS_HEALTH_POWER_UP = pg.image.load(os.path.join("..", "assets", "images", "heart.png"))
+BONUS_HEALTH_POWER_UP = pg.image.load(os.path.join("assets", "images", "heart.png"))
 BONUS_HEALTH_POWER_UP = pg.transform.scale(BONUS_HEALTH_POWER_UP, (50, 50))
 
-EXTRA_FIREPOWER_POWER_UP = pg.image.load(os.path.join("..", "assets", "images", "lightning_bolt.png"))
+EXTRA_FIREPOWER_POWER_UP = pg.image.load(os.path.join("assets", "images", "lightning_bolt.png"))
 EXTRA_FIREPOWER_POWER_UP = pg.transform.scale(EXTRA_FIREPOWER_POWER_UP, (50, 50))
 
 # Setting up the sfx and background music
 pg.mixer.init()
-LEVEL_UP_SFX = pg.mixer.Sound("..\\assets\\sounds\\level_up.wav")
-LIFE_LOST_SFX = pg.mixer.Sound("..\\assets\\sounds\\life_lost.wav")
-KILLED_ENEMY_SFX = pg.mixer.Sound("..\\assets\\sounds\\enemy_shot.wav")
-LASER_FIRED_SFX = pg.mixer.Sound("..\\assets\\sounds\\laser.wav")
-HURT_SFX = pg.mixer.Sound("..\\assets\\sounds\\hurt.wav")
-os.chdir("..\\assets\\sounds")
-pg.mixer.music.load("background_music.mp3")
-os.chdir("..\\..\\src")
+LEVEL_UP_SFX = pg.mixer.Sound("assets\\sounds\\level_up.wav")
+LIFE_LOST_SFX = pg.mixer.Sound("assets\\sounds\\life_lost.wav")
+KILLED_ENEMY_SFX = pg.mixer.Sound("assets\\sounds\\enemy_shot.wav")
+LASER_FIRED_SFX = pg.mixer.Sound("assets\\sounds\\laser.wav")
+HURT_SFX = pg.mixer.Sound("assets\\sounds\\hurt.wav")
+pg.mixer.music.load("assets\\sounds\\background_music.mp3")
 
 # Setting up the fonts
-MAIN_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 50)
-PLAY_BUTTON_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 100)
-TITLE_FONT = pg.font.Font("..\\assets\\fonts\\main_font.otf", 125)
+MAIN_FONT = pg.font.Font("assets\\fonts\\main_font.otf", 50)
+PLAY_BUTTON_FONT = pg.font.Font("assets\\fonts\\main_font.otf", 100)
+TITLE_FONT = pg.font.Font("assets\\fonts\\main_font.otf", 125)
 
 def main_menu():
     run = True
